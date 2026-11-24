@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="WorksLink conecta empresas con personas que buscan oportunidades laborales.">
+<meta name="theme-color" content="#080f1e">
+<title>WorksLink | Encuentra tu próxima oportunidad</title>
+<link rel="icon" type="image/png" href="img/Logo-WorksLink.png">
+<link rel="stylesheet" href="style.css?v=3">
+</head>
+<body class="sin-sesion">
+
+<section class="acceso" id="pantallaAcceso" aria-label="Acceso a WorksLink">
+    <div class="acceso-marca">
+        <div class="logo"><img src="img/Logo-WorksLink.png" alt="" width="48" height="48"><strong class="logo-texto">Works<span>Link</span></strong></div>
+        <h1>Conectamos talento con oportunidades</h1>
+        <p>Entra a tu cuenta para continuar. Cada tipo de cuenta tiene su propio panel de control.</p>
+        <ul class="acceso-beneficios">
+            <li>Candidatos: postúlate, guarda vacantes y sigue el estado de cada solicitud.</li>
+            <li>Empresas: publica vacantes, revisa candidatos y responde solicitudes.</li>
+        </ul>
+    </div>
+    <div class="acceso-lado">
+        <div class="acceso-caja">
+            <h2 id="tituloAcceso">Bienvenido a WorksLink</h2>
+            <p class="acceso-sub" id="subtituloAcceso">Accede para buscar empleo y postularte a vacantes.</p>
+
+            <div class="selector-rol" role="group" aria-label="Tipo de cuenta">
+                <button type="button" id="rolBtnCandidato" class="seleccionado" onclick="elegirRol('candidato')">
+                    <strong>👤 Candidato</strong><span>Busco empleo</span>
+                </button>
+                <button type="button" id="rolBtnEmpresa" onclick="elegirRol('empresa')">
+                    <strong>🏢 Empresa</strong><span>Publicar vacantes</span>
+                </button>
+            </div>
+
+            <div class="selector-modo">
+                <button type="button" id="modoLogin" class="seleccionado" onclick="cambiarModoAcceso('login')">Iniciar sesión</button>
+                <button type="button" id="modoRegistro" onclick="cambiarModoAcceso('registro')">Crear cuenta</button>
+            </div>
+
+            <form id="formAcceso">
+                <input type="hidden" id="rolCuenta" value="candidato">
+                <div id="camposRegistro" hidden>
+                    <label for="nombreCuenta">Nombre completo o nombre de la empresa</label>
+                    <input id="nombreCuenta" maxlength="100" placeholder="Tu nombre o empresa">
+                    <div id="camposEmpresa" hidden>
+                        <label for="descripcionEmpresa">Descripción de la empresa</label>
+                        <textarea id="descripcionEmpresa" maxlength="1200" placeholder="Cuéntanos qué hace tu empresa, sus servicios y su equipo..."></textarea>
+                        <label for="webEmpresa">Página web oficial</label>
+                        <input type="url" id="webEmpresa" placeholder="https://www.tuempresa.com">
+                    </div>
+                </div>
+                <label for="correoCuenta">Correo electrónico</label>
+                <input type="email" id="correoCuenta" required placeholder="correo@ejemplo.com">
+                <label for="contrasenaCuenta">Contraseña</label>
+                <input type="password" id="contrasenaCuenta" required minlength="6" placeholder="Mínimo 6 caracteres">
+                <button type="submit" class="btn-principal" id="btnEnviarAcceso">Iniciar sesión</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<header>
+    <div class="logo"><img src="img/Logo-WorksLink.png" alt="" width="48" height="48"><strong class="logo-texto">Works<span>Link</span></strong></div>
+    <nav>
+        <a href="#inicio" class="solo-candidato">Inicio</a>
+        <a href="#ofertas" class="solo-candidato">Empleos</a>
+        <a href="#categorias" class="solo-candidato">Categorías</a>
+        <button type="button" class="solo-candidato" onclick="mostrarFavoritos()">♥ Favoritos</button>
+        <button type="button" onclick="mostrarPanel()">Mi panel</button>
+        <button type="button" id="btnPublicar" class="solo-empresa" onclick="mostrarFormulario()">+ Publicar empleo</button>
+        <button type="button" id="btnSesion" onclick="abrirAcceso()">Cerrar sesión</button>
+    </nav>
+    <div id="estadoSesion" class="estado-sesion" hidden></div>
+</header>
+
+<section class="hero solo-candidato" id="inicio">
+    <span class="etiqueta">TU FUTURO COMIENZA AQUÍ</span>
+    <h1>Encuentra el empleo que conecta contigo</h1>
+    <p>Descubre oportunidades laborales, impulsa tu talento y conecta con empresas que buscan personas como tú.</p>
+    <div class="buscador">
+        <input type="text" id="buscar" placeholder="Puesto, empresa o ubicación..." aria-label="Buscar empleo">
+        <button type="button" onclick="buscarEmpleo()">Buscar empleo</button>
+    </div>
+    <div class="estadisticas">
+        <div><strong id="totalEmpleos">0</strong><span>Vacantes disponibles</span></div>
+        <div><strong id="totalEmpresas">0</strong><span>Empresas</span></div>
+        <div><strong id="totalSolicitudes">0</strong><span>Solicitudes</span></div>
+    </div>
+</section>
+
+<main>
+    <section class="contenedor solo-candidato" id="categorias">
+        <h2>Explora por categorías</h2>
+        <div class="categorias">
+            <button class="activa" onclick="filtrarCategoria('Todas')">Todas</button>
+            <button onclick="filtrarCategoria('Administración')">Administración</button>
+            <button onclick="filtrarCategoria('Tecnología')">Tecnología</button>
+            <button onclick="filtrarCategoria('Ventas')">Ventas</button>
+            <button onclick="filtrarCategoria('Educación')">Educación</button>
+            <button onclick="filtrarCategoria('Salud')">Salud</button>
+            <button onclick="filtrarCategoria('Logística')">Logística</button>
+            <button onclick="filtrarCategoria('Diseño')">Diseño</button>
+        </div>
+    </section>
+
+    <section class="contenedor solo-candidato" id="ofertas">
+        <div class="titulo-seccion">
+            <div>
+                <h2 id="tituloOfertas">Empleos disponibles</h2>
+                <p>Oportunidades para dar el siguiente paso en tu carrera.</p>
+            </div>
+            <select id="ordenar" onchange="ordenarEmpleos()">
+                <option value="recientes">Más recientes</option>
+                <option value="calificacion">Mejor calificadas</option>
+                <option value="empresa">Empresa A-Z</option>
+            </select>
+        </div>
+        <div id="listaEmpleos" class="empleos"></div>
+    </section>
+
+    <section class="contenedor panel panel-candidato" id="panelCandidato" hidden>
+        <span class="etiqueta-rol">Candidato</span>
+        <h2>Mi panel de candidato</h2>
+        <p id="textoPanelCandidato"></p>
+        <div class="resumen">
+            <div class="resumen-card"><h3 id="cPostulaciones">0</h3><p>Postulaciones enviadas</p></div>
+            <div class="resumen-card"><h3 id="cRevision">0</h3><p>En revisión</p></div>
+            <div class="resumen-card"><h3 id="cAceptadas">0</h3><p>Aceptadas</p></div>
+            <div class="resumen-card"><h3 id="cFavoritos">0</h3><p>Empleos guardados</p></div>
+        </div>
+        <div id="perfilCandidato"></div>
+        <h3 class="subtitulo">Mis postulaciones</h3>
+        <div id="listaPostulaciones"></div>
+        <h3 class="subtitulo">Empleos guardados</h3>
+        <div id="listaGuardados"></div>
+    </section>
+
+    <section class="contenedor panel panel-empresa" id="panelEmpresa" hidden>
+        <span class="etiqueta-rol">Empresa</span>
+        <h2>Panel de empresa</h2>
+        <p id="textoPanelEmpresa"></p>
+        <div class="resumen">
+            <div class="resumen-card"><h3 id="eVacantes">0</h3><p>Vacantes publicadas</p></div>
+            <div class="resumen-card"><h3 id="eSolicitudes">0</h3><p>Solicitudes recibidas</p></div>
+            <div class="resumen-card"><h3 id="ePendientes">0</h3><p>Pendientes por revisar</p></div>
+            <div class="resumen-card"><h3 id="eAceptadas">0</h3><p>Candidatos aceptados</p></div>
+        </div>
+        <div id="perfilEmpresaPanel"></div>
+        <h3 class="subtitulo">Mis vacantes</h3>
+        <div id="listaVacantes"></div>
+        <h3 class="subtitulo">Solicitudes recibidas</h3>
+        <div id="listaSolicitudesEmpresa"></div>
+    </section>
+</main>
+
+<div class="modal" id="modalPublicar" role="dialog" aria-modal="true">
+    <div class="modal-contenido">
+        <button class="cerrar" type="button" onclick="cerrarModal('modalPublicar')">×</button>
+        <h2 id="tituloFormulario">Publicar empleo</h2>
+        <form id="formEmpleo">
+            <input type="hidden" id="idEditar">
+            <label for="empresa">Nombre de la empresa</label>
+            <input id="empresa" required maxlength="80" readonly>
+            <label for="puesto">Nombre del puesto</label>
+            <input id="puesto" required maxlength="80" placeholder="Ej. Desarrollador web">
+            <label for="categoria">Categoría</label>
+            <select id="categoria" required>
+                <option value="">Seleccionar</option>
+                <option>Administración</option>
+                <option>Tecnología</option>
+                <option>Ventas</option>
+                <option>Educación</option>
+                <option>Salud</option>
+                <option>Logística</option>
+                <option>Diseño</option>
+            </select>
+            <label for="tipo">Tipo de empleo</label>
+            <select id="tipo" required>
+                <option value="">Seleccionar</option>
+                <option>Tiempo completo</option>
+                <option>Medio tiempo</option>
+                <option>Prácticas</option>
+                <option>Remoto</option>
+            </select>
+            <label for="ubicacion">Ubicación</label>
+            <input id="ubicacion" required placeholder="Ciudad, estado o remoto">
+            <label for="salario">Salario</label>
+            <input id="salario" placeholder="Ej. $12,000 mensuales">
+            <label for="descripcion">Descripción del empleo</label>
+            <textarea id="descripcion" required maxlength="1500" placeholder="Describe las actividades y requisitos..."></textarea>
+            <label for="correo">Correo de contacto</label>
+            <input type="email" id="correo" required placeholder="contacto@empresa.com">
+            <button type="submit" class="btn-principal">Guardar publicación</button>
+        </form>
+    </div>
+</div>
+
+<div class="modal" id="modalPerfil" role="dialog" aria-modal="true">
+    <div class="modal-contenido">
+        <button class="cerrar" type="button" onclick="cerrarModal('modalPerfil')">×</button>
+        <h2 id="tituloPerfil">Mi perfil</h2>
+        <form id="formPerfil">
+            <label for="pf_nombre">Nombre completo o nombre de la empresa</label>
+            <input id="pf_nombre" required maxlength="100">
+            <label for="pf_telefono">Teléfono</label>
+            <input type="tel" id="pf_telefono" maxlength="20" placeholder="81 1234 5678">
+            <label for="pf_ubicacion">Ubicación</label>
+            <input id="pf_ubicacion" maxlength="100" placeholder="Ciudad, estado">
+
+            <div id="camposPerfilCandidato">
+                <label for="pf_titulo">Profesión o puesto deseado</label>
+                <input id="pf_titulo" maxlength="100" placeholder="Ej. Diseñadora gráfica">
+                <label for="pf_resumen">Sobre mí</label>
+                <textarea id="pf_resumen" maxlength="800" placeholder="Cuéntales a las empresas quién eres y qué buscas..."></textarea>
+                <label for="pf_habilidades">Habilidades (separadas por comas)</label>
+                <input id="pf_habilidades" maxlength="300" placeholder="Excel, Photoshop, Inglés intermedio">
+                <label for="pf_experiencia">Experiencia laboral</label>
+                <textarea id="pf_experiencia" maxlength="1200" placeholder="Empresa, puesto y años de cada trabajo anterior..."></textarea>
+                <label for="pf_educacion">Educación</label>
+                <textarea id="pf_educacion" maxlength="600" placeholder="Escuela, carrera o curso, año..."></textarea>
+                <label for="pf_disponibilidad">Disponibilidad</label>
+                <select id="pf_disponibilidad">
+                    <option value="">Seleccionar</option>
+                    <option>Inmediata</option>
+                    <option>En 2 semanas</option>
+                    <option>En 1 mes</option>
+                    <option>Estoy empleado/a actualmente</option>
+                </select>
+                <label for="pf_pretension">Pretensión salarial</label>
+                <input id="pf_pretension" maxlength="60" placeholder="Ej. $12,000 mensuales">
+                <label for="pf_web">Portafolio, LinkedIn o sitio personal</label>
+                <input type="url" id="pf_web" placeholder="https://www.linkedin.com/in/tu-perfil">
+            </div>
+
+            <div id="camposPerfilEmpresa" hidden>
+                <label for="pf_descripcion">Descripción de la empresa</label>
+                <textarea id="pf_descripcion" maxlength="1200"></textarea>
+                <label for="pf_sector">Sector o giro</label>
+                <input id="pf_sector" maxlength="80" placeholder="Ej. Tecnología, comercio, salud">
+                <label for="pf_tamano">Tamaño de la empresa</label>
+                <select id="pf_tamano">
+                    <option value="">Seleccionar</option>
+                    <option>1-10 empleados</option>
+                    <option>11-50 empleados</option>
+                    <option>51-200 empleados</option>
+                    <option>201-1000 empleados</option>
+                    <option>Más de 1000 empleados</option>
+                </select>
+                <label for="pf_fundacion">Año de fundación</label>
+                <input type="number" id="pf_fundacion" min="1800" max="2100" placeholder="2015">
+                <label for="pf_correoContacto">Correo de contacto de RH</label>
+                <input type="email" id="pf_correoContacto" placeholder="rh@empresa.com">
+                <label for="pf_beneficios">Beneficios que ofrece</label>
+                <textarea id="pf_beneficios" maxlength="600" placeholder="Prestaciones, horarios flexibles, capacitación..."></textarea>
+                <label for="pf_webEmpresa">Página web oficial</label>
+                <input type="url" id="pf_webEmpresa" placeholder="https://www.tuempresa.com">
+            </div>
+
+            <button type="submit" class="btn-principal">Guardar perfil</button>
+        </form>
+    </div>
+</div>
+
+<div class="modal" id="modalDetalles" role="dialog" aria-modal="true">
+    <div class="modal-contenido">
+        <button class="cerrar" type="button" onclick="cerrarModal('modalDetalles')">×</button>
+        <div id="contenidoDetalles"></div>
+    </div>
+</div>
+
+<div class="modal" id="modalSolicitud" role="dialog" aria-modal="true">
+    <div class="modal-contenido">
+        <button class="cerrar" type="button" onclick="cerrarModal('modalSolicitud')">×</button>
+        <h2>Enviar solicitud de empleo</h2>
+        <p id="nombreVacante"></p>
+        <form id="formSolicitud">
+            <input type="hidden" id="empleoSolicitado">
+            <label for="nombreCandidato">Nombre completo</label>
+            <input id="nombreCandidato" required maxlength="100">
+            <label for="correoCandidato">Correo electrónico</label>
+            <input type="email" id="correoCandidato" required>
+            <label for="telefonoCandidato">Teléfono</label>
+            <input type="tel" id="telefonoCandidato" required maxlength="20">
+            <label for="mensajeCandidato">Mensaje para la empresa</label>
+            <textarea id="mensajeCandidato" required maxlength="1000"></textarea>
+            <button type="submit" class="btn-principal">Enviar solicitud</button>
+        </form>
+    </div>
+</div>
+
+<div id="notificacion" class="notificacion" role="status"></div>
+
+<footer>
+    <div class="logo"><img src="img/Logo-WorksLink.png" alt="" width="48" height="48"><strong class="logo-texto">Works<span>Link</span></strong></div>
+    <p>Conectamos talento con oportunidades.</p>
+</footer>
+
+<script src="script.js?v=3"></script>
+</body>
+</html>
